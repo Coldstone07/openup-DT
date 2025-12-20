@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+networkx
+numpy
+scikit-learn
+faiss-cpu
+sentence-transformers
+onnxruntime # faster inference for sentence-transformers often
