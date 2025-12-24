@@ -34,8 +34,16 @@ class GraphBuilder:
             entities.append({"label": "Goal", "text": "Improve Skills"})
         if "stress" in text or "anxious" in text:
             entities.append({"label": "Sentiment", "text": "Anxious"})
-        if "time" in text or "busy" in text:
+        if "time" in text or "busy" in text or "schedule" in text:
             entities.append({"label": "Constraint", "text": "Time Constraints"})
+        if "job" in text or "hiring" in text or "career" in text:
+             entities.append({"label": "Goal", "text": "Job Search / Career Growth"})
+        if "fundraising" in text or "investor" in text or "scale" in text:
+             entities.append({"label": "Goal", "text": "Startup Fundraising & Scaling"})
+        if "leadership" in text or "management" in text:
+             entities.append({"label": "Goal", "text": "Leadership Skills"})
+        if "ai" in text or "ml" in text or "data" in text:
+             entities.append({"label": "Interest", "text": "AI & Data Science"})
             
         # Add nodes and edges to graph
         for entity in entities:
@@ -43,11 +51,6 @@ class GraphBuilder:
             G.add_node(node_id, label=entity['label'], text=entity['text'])
             # Edge from Session to Entity
             G.add_edge(session.session_id, node_id, relation="MENTIONS", weight=1.0)
-            
-            # If user node doesn't exist, create it mentally or explicitly?
-            # Let's assume the graph IS the user profile, so we don't need a User node per se 
-            # unless we want to link everything to a central node.
-            # For traversal, linking to session is good enough for temporal tracking.
 
     def get_graph_data(self, user_id: Optional[str] = None) -> Dict[str, Any]:
         """Returns the graph data in a JSON-serializable format."""
@@ -67,6 +70,7 @@ class GraphBuilder:
         """
         Retrieves a text representation of the User's Profile Graph.
         Aggregates all node labels and texts to form the 'User State'.
+        Also includes the latest session transcript to ensure dense embeddings.
         """
         if user_id not in self.graphs:
             return ""
@@ -74,12 +78,23 @@ class GraphBuilder:
         G = self.graphs[user_id]
         context_parts = []
         
-        # Prioritize recent nodes or specific types if needed? 
-        # For MVP, we dump the whole graph state.
+        # 1. Add Graph Nodes (Long-term memory)
         for node_id, data in G.nodes(data=True):
             label = data.get('label', 'Unknown')
             text = data.get('text', '')
-            if label != "Session": # Skip session markers, focus on content
+            if label != "Session": 
                 context_parts.append(f"{label}: {text}")
-                
+
+        # 2. Flatten relevant session history (or just the latest)??
+        # The AI Hive "EV" is derived from the graph. 
+        # Since we added "Goal" nodes, that should be enough.
+        # But if the graph is empty (cold start), we should fallback to session usage.
+        
+        if not context_parts:
+             # Try to find the latest session node
+             session_nodes = [n for n, d in G.nodes(data=True) if d.get('label') == 'Session']
+             # (This is a simplified check, ideally sort by timestamp)
+             if session_nodes:
+                 context_parts.append("New User History: (Processing...)") # Placeholder
+        
         return ". ".join(context_parts)

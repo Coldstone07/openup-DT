@@ -1,6 +1,57 @@
 @import "tailwindcss";
 
+:root {
+  /* Cosmic/Moonlight Palette */
+  --color-cosmic-bg: #0B0E17;
+  /* Deep dark blue/black */
+  --color-cosmic-surface: #151925;
+  /* Slightly lighter surface */
+  --color-cosmic-primary: #6366f1;
+  /* Indigo */
+  --color-cosmic-secondary: #8b5cf6;
+  /* Violet */
+  --color-cosmic-accent: #38bdf8;
+  /* Sky blue/Cyan for glows */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 body {
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: var(--color-cosmic-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel {
+  background: rgba(21, 25, 37, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-cosmic-accent), var(--color-cosmic-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-cosmic-primary), var(--color-cosmic-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

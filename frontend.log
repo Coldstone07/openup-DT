@@ -2,9 +2,12 @@
 > frontend@0.0.0 dev
 > vite --port 5173
 
-Port 5173 is in use, trying another one...
 
-  VITE v7.3.0  ready in 162 ms
+  VITE v7.3.0  ready in 91 ms
 
-  ➜  Local:   http://localhost:5174/
+  ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+4:57:24 PM [vite] (client) hmr update /src/index.css
+4:59:02 PM [vite] (client) hmr update /src/App.jsx, /src/index.css
+4:59:03 PM [vite] (client) ✨ new dependencies optimized: clsx, tailwind-merge
+4:59:03 PM [vite] (client) ✨ optimized dependencies changed. reloading
